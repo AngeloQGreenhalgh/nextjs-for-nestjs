@@ -37,6 +37,7 @@ export function CreateUserForm() {
           name='name'
           LabelText='Nome'
           placeholder='Seu nome'
+          id='name'
           disabled={isPending}
           defaultValue={state.user.name}
           required
@@ -44,6 +45,7 @@ export function CreateUserForm() {
         <InputText
           type='email'
           name='email'
+          id='email'
           LabelText='E-mail'
           placeholder='Seu e-mail'
           disabled={isPending}
@@ -53,6 +55,7 @@ export function CreateUserForm() {
         <InputText
           type='password'
           name='password'
+          id='password'
           LabelText='Senha'
           placeholder='Sua senha'
           disabled={isPending}
@@ -61,6 +64,7 @@ export function CreateUserForm() {
         <InputText
           type='password'
           name='password2'
+          id='password2'
           LabelText='Repetir senha'
           placeholder='Sua senha novamente'
           disabled={isPending}

@@ -39,11 +39,47 @@ export async function createUserAction(
     };
   }
 
-  // FETCH API
+  // FETCH APIconst
+
+  const apiUrl = process.env.API_URL || 'http:/localhost:3001';
+
+  try {
+    const response = await fetch(`${apiUrl}/user`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(parsedFormData.data),
+    });
+
+    const json = await response.json();
+    console.log(JSON.stringify(json, null, 2));
+
+    if (!response.ok) {
+      return {
+        user: PublicUserSchema.parse(formObj),
+        errors: json.message,
+        success: false,
+      };
+    }
+    console.log(JSON.stringify(json, null, 2));
+    return {
+      user: PublicUserSchema.parse(formObj),
+      errors: ['Success'],
+      success: true,
+    };
+  } catch (e) {
+    console.log(e);
+    return {
+      user: PublicUserSchema.parse(formObj),
+      errors: ['Falha ao conectar-se ao servidor'],
+      success: false,
+    };
+  }
 
   return {
-    user: state.user,
-    errors: [],
-    success: true,
+    user: PublicUserSchema.parse(formObj),
+    errors: ['Success'],
+    success: false,
   };
 }
