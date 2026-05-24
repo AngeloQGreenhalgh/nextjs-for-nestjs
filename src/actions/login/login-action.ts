@@ -1,13 +1,13 @@
 'use server';
 
-import { createLoginSession } from '@/lib/login/manage-login';
-import { VerifyPassword } from '@/lib/login/password-hashing';
+import { LoginSchema } from '@/lib/login/schemas';
+import { apiRequest } from '@/utils/api-request';
 import { asyncDelay } from '@/utils/async-delay';
-import { redirect } from 'next/navigation';
+import { getZodErrorMessages } from '@/utils/get-zod-error-messages';
 
 type LoginActionState = {
-  username: string;
-  error: string;
+  email: string;
+  errors: string[];
 };
 
 export async function LoginAction(state: LoginActionState, formData: FormData) {
@@ -15,8 +15,8 @@ export async function LoginAction(state: LoginActionState, formData: FormData) {
 
   if (!allowLogin) {
     return {
-      username: '',
-      error: 'Login not alowed',
+      email: '',
+      errors: ['Login not alowed'],
     };
   }
 
@@ -24,36 +24,44 @@ export async function LoginAction(state: LoginActionState, formData: FormData) {
 
   if (!(formData instanceof FormData)) {
     return {
-      username: '',
-      error: 'Dados inválidos',
+      email: '',
+      errors: ['Dados inválidos'],
     };
   }
+  // Validar
+  const formObj = Object.fromEntries(formData.entries());
+  const formEmail = formObj?.email?.toString() || '';
+  const parsedFormData = LoginSchema.safeParse(formObj);
 
-  // Dados que o usuário digitou no form
-  const username = formData.get('username')?.toString().trim() || '';
-  const password = formData.get('password')?.toString().trim() || '';
-
-  if (!username || !password) {
+  if (!parsedFormData.success) {
     return {
-      username,
-      error: 'Digite o usuário e a senha',
+      email: formEmail,
+      errors: getZodErrorMessages(parsedFormData.error),
     };
   }
-
-  // Aqui checaria se o usuário existe na base de dados
-  const isUsernameValid = username === process.env.LOGIN_USER;
-  const isPasswordValid = await VerifyPassword(
-    password,
-    process.env.LOGIN_PASS || '',
+  // Fetch
+  const loginResponse = await apiRequest<{ accessToken: string }>(
+    '/auth/login',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(parsedFormData.data),
+    },
   );
 
-  if (!isUsernameValid || !isPasswordValid) {
+  if (!loginResponse.success) {
     return {
-      username,
-      error: 'Usuário ou senha inválidos',
+      email: formEmail,
+      errors: loginResponse.errors,
     };
   }
-
-  await createLoginSession(username);
-  redirect('/admin/post');
+  // await createLoginSession(email);
+  // redirect('/admin/post');
+  console.log(loginResponse.data);
+  return {
+    email: formEmail,
+    errors: ['Success'],
+  };
 }

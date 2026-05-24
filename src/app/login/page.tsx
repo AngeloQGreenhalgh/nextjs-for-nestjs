@@ -15,7 +15,7 @@ export default function AdminLoginPage() {
     return (
       <ErrorMessage
         contentTitle='403'
-        content='Libre o sistema de login usando ALLOW_LOGIN'
+        content='Libere o sistema de login usando ALLOW_LOGIN'
       />
     );
   }
