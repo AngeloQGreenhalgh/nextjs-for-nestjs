@@ -57,5 +57,5 @@ export async function createUserAction(
     };
   }
 
-  redirect('/login?create=1');
+  redirect('/login?created=1');
 }

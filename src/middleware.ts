@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyJwt } from './lib/login/manage-login';
 
 // Valida rotas específicas a Admin
 export const config = {
@@ -9,7 +8,7 @@ export const config = {
 // Implementação do Middleware
 export async function middleware(request: NextRequest) {
   // Verifica se é a rota de login em admin
-  const isLoginPage = request.nextUrl.pathname.startsWith('/admin/login');
+  const isLoginPage = request.nextUrl.pathname.startsWith('/login');
 
   // Verifica se é a rota de admin
   const isAdminPage = request.nextUrl.pathname.startsWith('/admin');
@@ -33,11 +32,11 @@ export async function middleware(request: NextRequest) {
     process.env.LOGIN_COOKIE_NAME || 'loginSession',
   )?.value;
 
-  const isAutenticated = await verifyJwt(jwtSession);
+  const isAutenticated = !!jwtSession;
 
   // Caso não esteja autênticado redireciona para a página de login
   if (!isAutenticated) {
-    const loginUrl = new URL('/admin/login', request.url);
+    const loginUrl = new URL('/login', request.url);
     return NextResponse.redirect(loginUrl);
   }
 
