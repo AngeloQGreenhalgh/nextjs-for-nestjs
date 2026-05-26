@@ -2,7 +2,11 @@ import { getZodErrorMessages } from '@/utils/get-zod-error-messages';
 import { isUrlOrRelativePath } from '@/utils/is-url-or-relative-path';
 import sanitizeHtml from 'sanitize-html';
 import { z } from 'zod';
+import { PublicUserSchema } from '../user/schemas';
 
+// Schemas criados com o zod, um schema funciona como um objeto tipo
+// 'DTO', porém ao infés de ser um objeto apático, possui comportamento
+// Exemplo, validação de dados
 const PostBaseSchema = z.object({
   title: z
     .string()
@@ -48,6 +52,40 @@ export const PostCreateSchema = PostBaseSchema;
 export const PostUpdateSchema = PostBaseSchema.extend({
   // id: z.string().uuid('ID inválido'),
 });
+
+export const CreatePostForApiSchema = PostBaseSchema.omit({
+  author: true,
+  published: true,
+}).extend({});
+
+export const UpdatePostForApiSchema = PostBaseSchema.omit({
+  author: true,
+}).extend({});
+
+export const PublicPostForApiSchema = PostBaseSchema.extend({
+  id: z.string().default(''),
+  slug: z.string().default(''),
+  title: z.string().default(''),
+  excerpt: z.string().default(''),
+  author: PublicUserSchema.optional().default({
+    id: '',
+    email: '',
+    name: '',
+  }),
+  content: z.string().default(''),
+  coverImageUrl: z.string().default(''),
+  createdAt: z.string().default(''),
+});
+
+export type CreatePostForApiDto = z.infer<typeof CreatePostForApiSchema>;
+export type UpdatePostForApiDto = z.infer<typeof UpdatePostForApiSchema>;
+export type PublicPostForApiDto = z.infer<typeof PublicPostForApiSchema>;
+
+// console.log(
+//   PublicPostSchemaForApi.parse({
+//     id: '80775244-0453-406e-86b3-79af1943806a',
+//   }),
+// );
 
 // const obj = {
 //   id: 'afa086e4-53e4-492d-acf2-7c2966d83fcd',
