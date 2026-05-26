@@ -1,4 +1,7 @@
+// Esta notação informa que é obrigatório a execução dessa
+// função somente no lado do servidor
 import 'server-only';
+
 import { getLoginSessionForApi } from '@/lib/login/manage-login';
 import { ApiRequest, apiRequest } from './api-request';
 
