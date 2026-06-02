@@ -1,0 +1,67 @@
+{
+  "window.zoomLevel": 1,
+  "breadcrumbs.enabled": false,
+  "editor.fontSize": 14,
+  "debug.console.fontSize": 14,
+  "terminal.integrated.fontSize": 14,
+  "editor.glyphMargin": false,
+  "workbench.activityBar.location": "top",
+  "editor.lineNumbers": "on",
+  "files.eol": "\n", // Final de linha sempre será LF
+  "workbench.editor.labelFormat": "short", // Formato curto para nomes de abas
+  "editor.tabSize": 2, // Tamanho da tabulação
+  "explorer.compactFolders": false, // Mostrar todas as pastas na árvore de arquivos
+
+  // Desabilitar preview de arquivos ao clicar na árvore de arquivos
+  "workbench.editor.enablePreview": false,
+
+  // Configurações do Code Runner
+  // Limpar saída anterior ao rodar o código
+  "code-runner.clearPreviousOutput": true,
+
+  // Rodar no terminal integrado
+  "code-runner.runInTerminal": true,
+
+  // Ignorar seleção de código
+  "code-runner.ignoreSelection": true,
+
+  // Comando para rodar arquivos TypeScript (nesse caso o mesmo camando para rodar o tsx no terminal)
+  "code-runner.executorMap": {
+    "typescript": "clear; npx tsx"
+  },
+
+  // Configurações do TailwindCSS
+  "tailwindCSS.experimental.classRegex": [
+    ["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+  ],
+
+  // 🛠 Formatação e Lint
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[xml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[svg]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": true
+  },
+  "editor.suggestOnTriggerCharacters": true
+}

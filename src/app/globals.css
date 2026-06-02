@@ -1,0 +1,5 @@
+@import 'tailwindcss';
+
+/*Contraola Dark Mode manual*/
+/* @custom-variant dark (&:where(.dark, .dark *)); */
+@plugin "@tailwindcss/typography";
