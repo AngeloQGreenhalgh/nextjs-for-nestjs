@@ -2,10 +2,13 @@ import clsx from 'clsx';
 import { useId } from 'react';
 
 type InputTextprops = {
-  LabelText?: string;
+  labelText?: string;
 } & React.ComponentProps<'input'>;
 
-export function InputText({ LabelText = '', ...props }: InputTextprops) {
+export function InputText({
+  labelText: LabelText = '',
+  ...props
+}: InputTextprops) {
   const id = useId();
   return (
     <div className='flex flex-col gap-2'>
